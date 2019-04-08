@@ -75,8 +75,6 @@
         <main class="py-4">
           <div class="container">
 
-          @include('partials.success')
-          @include('partials.error')
 
               <div class="row">
             @yield('content')

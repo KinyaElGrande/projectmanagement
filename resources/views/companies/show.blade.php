@@ -10,10 +10,11 @@
       <div class="jumbotron">
         <h1>{{ $company->name }}</h1>
         <p class="lead">{{ $company->description}}</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">wow</a></p>
+        
       </div>
 
       <!-- Example row of columns -->
+      <li><a class="btn btn-lg btn-success" href="/projects/create" role="button">Add Project</a><li>
       <div class="row" style="background: white; margin: 10px">
 
         @foreach($company->projects as $project)
@@ -32,16 +33,36 @@
           <div class="sidebar-module">
             <h4>Manage</h4>
             <ol class="list-unstyled">
-              <li><a href="#">Add new Member</a></li>
-              <li><a href="/companies/{{ $company->id }}/edit">Edit</a></li>
-              <li><a href="#">Delete</a></li>
+              <li><a class="btn btn-sm btn-warning" href="/companies/{{ $company->id }}/edit">Edit</a></li>
+              </br>
+              <li>
+                                
+              <a  
+              class="btn btn-sm btn-danger" 
+              href="#"
+                  onclick="
+                  var result = confirm('Are you sure you wish to delete this Company?');
+                      if( result ){
+                              event.preventDefault();
+                              document.getElementById('delete-form').submit();
+                      }
+                          "
+                          >
+                  Delete
+              </a>
+
+              <form id="delete-form" action="{{ route('companies.destroy',[$company->id]) }}" 
+                method="POST" style="display: none;">
+                        <input type="hidden" name="_method" value="delete">
+                        {{ csrf_field() }}
+              </form>
+              </li>
+              </br>
+              <li><a href="/companies">All companies</a></li>
             </ol>
           </div>
 
-           <!-- <h4>Members</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">March 2014</a></li>
-            </ol>-->
+
           </div>
         </div>
 

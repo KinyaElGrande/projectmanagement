@@ -4,7 +4,7 @@
 
 <div class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
   <div class="panel panel-primary">
-    <div class="panel-heading">Companies</div>
+    <div class="panel-heading">Companies </div>
     <div class="panel-body">
 
         <ul class="list-group">
@@ -18,4 +18,12 @@
   {!! $companies->links()!!}
 
 </div>
+<div class="col-sm-3 col-md-3 col-lg-3 pull-right">
+          <div class="sidebar-module">
+          <div class="sidebar-module">
+            <ol class="list-unstyled">
+              <li><a class=" btn btn btn-success" href="/companies/create" role="button">Add new Company</a></li>
+          </div>
+        </div>
+</div>   
 @endsection
