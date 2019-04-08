@@ -15,9 +15,10 @@ class CompaniesController extends Controller
     public function index()
     {
         //
-        $companies = Company::all();
+        $companies = Company::latest()->paginate(5);
 
-        return view ('companies.index', ['companies'=>$companies]);
+        return view ('companies.index', ['companies'=>$companies],compact('companies'))
+                    ->with('i', (request()->input('page',1) -1)*5);
     }
 
     /**
@@ -79,6 +80,7 @@ class CompaniesController extends Controller
     public function update(Request $request, Company $company)
     {
         //save the data
+        
         $companyupdate = Company::where('id', $company->id)
                         ->update([
                             'name'=>$request->input('name'),

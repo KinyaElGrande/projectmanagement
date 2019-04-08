@@ -14,5 +14,8 @@
         </ul>
     </div>
   </div>
+
+  {!! $companies->links()!!}
+
 </div>
 @endsection
