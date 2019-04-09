@@ -14,7 +14,7 @@
       </div>
 
       <!-- Example row of columns -->
-      <li><a class="pull-right btn-sm btn btn-success" href="/projects/create/{{ $company->id }}" >Add Project</a><li>
+      <li><a class="pull-right btn-sm btn btn-success" href="/projects/create" >Add Project</a><li>
       <div class="row" style="background: white; margin: 10px">
 
         @foreach($company->projects as $project)

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
-    /**
+ /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -15,6 +15,12 @@ class ProjectsController extends Controller
     public function index()
     {
         //
+        if(Auth::check() ){
+        $projects = Project::where('user_id', Auth::user()->id)->get();
+        
+        return view('projects.index',['projects'=>$projects]);
+        }
+        return view ('auth.login');
     }
 
     /**
@@ -22,9 +28,10 @@ class ProjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Project $project)
     {
         //
+        return view('projects.create');
     }
 
     /**
@@ -36,50 +43,91 @@ class ProjectsController extends Controller
     public function store(Request $request)
     {
         //
+        if(Auth::check()){
+            $project = Project::create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'user_id' => Auth::user()->id
+            ]);
+            if($project){
+                return redirect()->route('projects.show', ['project'=> $project->id])
+                ->with('success' , 'project created successfully');
+            }
+        }
+        
+            return back()->withInput()->with('errors', 'Error creating new project');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Project  $project
+     * @param  \App\project  $project
      * @return \Illuminate\Http\Response
      */
     public function show(Project $project)
     {
         //
+        $project = Project::find($project->id);
+
+       return view('projects.show', ['project'=>$project]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Project  $project
+     * @param  \App\project  $project
      * @return \Illuminate\Http\Response
      */
     public function edit(Project $project)
     {
         //
+        $project = Project::find($project->id);
+
+        return view('projects.edit', ['project'=>$project]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Project  $project
+     * @param  \App\project  $project
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Project $project)
     {
-        //
+        //save the data
+        
+        $projectupdate = Project::where('id', $project->id)
+                        ->update([
+                            'name'=>$request->input('name'),
+                            'description'=>$request->input('description'),
+                        ]);
+        if($projectupdate){
+            return redirect()->route('projects.show',['project'->$project->id])
+            ->with('success','project updated successfully');
+        }
+        //redirects
+
+        return back()->withInput();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Project  $project
+     * @param  \App\project  $project
      * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project)
     {
         //
+        $findproject = Project::find( $project->id);
+		if($findproject->delete()){
+            
+            //redirect
+            return redirect()->route('projects.index')
+            ->with('success' , 'project deleted successfully');
+        }
+        return back()->withInput()->with('error' , 'project could not be deleted');
+        
     }
 }

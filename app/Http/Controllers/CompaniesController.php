@@ -16,10 +16,12 @@ class CompaniesController extends Controller
     public function index()
     {
         //
-        $companies = Company::latest()->paginate(5);
-
-        return view ('companies.index', ['companies'=>$companies],compact('companies'))
-                    ->with('i', (request()->input('page',1) -1)*5);
+        if(Auth::check() ){
+        $companies = Company::where('user_id', Auth::user()->id)->get();
+        
+        return view('companies.index',['companies'=>$companies]);
+        }
+        return view ('auth.login');
     }
 
     /**
